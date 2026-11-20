@@ -1,0 +1,16 @@
+[0:v]trim=start=44:end=48.5,setpts=PTS-STARTPTS,crop=1215:2160:1400:0,scale=1080:1920[v1];
+[0:v]trim=start=48.5:end=50.5,setpts=2*(PTS-STARTPTS),crop=1215:2160:1400:0,scale=1080:1920[v2];
+[0:v]trim=start=50.5:end=56,setpts=PTS-STARTPTS,crop=1215:2160:1400:0,scale=1080:1920[v3];
+[v1][v2][v3]concat=n=3:v=1:a=0,fps=30,setsar=1[vA];
+[1:v]crop=1215:2160:1400:0,zoompan=z='1+0.12*on/480':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=480:s=1080x1920:fps=30,setsar=1[vB];
+[vA][vB]concat=n=2:v=1:a=0,fade=t=in:st=0:d=0.5,fade=t=out:st=29.5:d=0.5,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='GTA 6 IS OUT NOW':fontsize=96:fontcolor=white:borderw=3:bordercolor=black:box=1:boxcolor=black@0.45:boxborderw=30:x=(w-text_w)/2:y=160:enable='between(t,0.5,5)',drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='This clip was made by an AI':fontsize=54:fontcolor=white:borderw=3:bordercolor=black:box=1:boxcolor=black@0.55:boxborderw=24:x=(w-text_w)/2:y=h*0.40:enable='between(t,14.5,19.5)',drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Make clips like this with AI':fontsize=54:fontcolor=white:borderw=3:bordercolor=black:box=1:boxcolor=black@0.55:boxborderw=24:x=(w-text_w)/2:y=h*0.40:enable='between(t,19.5,24.5)',drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='and earn money on make.fun':fontsize=54:fontcolor=white:borderw=3:bordercolor=black:box=1:boxcolor=black@0.55:boxborderw=24:x=(w-text_w)/2:y=h*0.40:enable='between(t,24.5,29.5)',drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='make.fun/bounty/gta6-clipper-01':fontsize=52:fontcolor=#ffd94a:borderw=2:bordercolor=black:box=1:boxcolor=black@0.55:boxborderw=20:x=(w-text_w)/2:y=h*0.78:enable='between(t,26,29.5)'[vout];
+[0:a]atrim=start=44:end=48.5,asetpts=PTS-STARTPTS[a1];
+[0:a]atrim=start=48.5:end=50.5,asetpts=PTS-STARTPTS,atempo=0.5[a2];
+[0:a]atrim=start=50.5:end=56,asetpts=PTS-STARTPTS[a3];
+[a1][a2][a3]concat=n=3:v=0:a=1[aA];
+[0:a]atrim=start=44:end=56,asetpts=PTS-STARTPTS,volume=0.12[bed1];
+[0:a]atrim=start=44:end=48,asetpts=PTS-STARTPTS,volume=0.12[bed2];
+[bed1][bed2]concat=n=2:v=0:a=1[bed];
+[2:a]adelay=1000|1000[vo];
+[bed][vo]amix=inputs=2:duration=first:dropout_transition=0,afade=t=out:st=15:d=1[aB];
+[aA][aB]concat=n=2:v=0:a=1[aout]
